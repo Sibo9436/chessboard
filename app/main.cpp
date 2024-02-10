@@ -1,4 +1,5 @@
 #include "chess.hpp"
+#include "gamestate.hpp"
 #include <glad/glad.h>
 // Commento assolutamente fondamentale
 #include <GLFW/glfw3.h>
@@ -9,6 +10,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <memory>
 #include <renderer.hpp>
 #include <stb_image.h>
 
@@ -48,13 +50,14 @@ void init_imgui(GLFWwindow *window) {
   ImGui_ImplOpenGL3_Init();
 }
 
-void drawPieces(ChessRenderer &renderer, ChessBoard &board) {
-  for (auto piece : *board.getPieces()) {
+void drawPieces(ChessRenderer &renderer, GameState &state) {
+  for (auto piece : *state.getPieces()) {
     renderer.drawPiece(piece->x, piece->y, piece->type, piece->color);
   }
 }
 
 // temporaneo
+/*
 void key_callback(GLFWwindow *window, int key, int scancode, int action,
                   int mods) {
 
@@ -78,6 +81,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action,
     }
   }
 }
+*/
 void mouse_callback(GLFWwindow *window, int button, int action, int mods) {
   if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
     double mx, my;
@@ -89,8 +93,8 @@ void mouse_callback(GLFWwindow *window, int button, int action, int mods) {
     int hs = height / 8;
     int x = (mx / ws);
     int y = (my / hs);
-    auto *board = static_cast<ChessBoard *>(glfwGetWindowUserPointer(window));
-    board->select(x, y);
+    auto *state = static_cast<GameState *>(glfwGetWindowUserPointer(window));
+    state->handleInput(x, y);
   }
 }
 
@@ -148,9 +152,10 @@ int main() {
   boardRenderer.setTextureAtlas(image, width, height, nrChannels);
   boardRenderer.drawBoard({});
   stbi_image_free(image);
-  ChessBoard board;
-  glfwSetWindowUserPointer(window, (void *)&board);
-  glfwSetKeyCallback(window, key_callback);
+  // ChessBoard board;
+  GameState state(std::make_unique<ChessBoard>());
+  glfwSetWindowUserPointer(window, (void *)&state);
+  // glfwSetKeyCallback(window, key_callback);
   glfwSetMouseButtonCallback(window, mouse_callback);
 
   while (!glfwWindowShouldClose(window)) {
@@ -162,13 +167,13 @@ int main() {
     // glfwWaitEvents();
 
     /*other logic here*/
-    drawPieces(boardRenderer, board);
+    drawPieces(boardRenderer, state);
 
     /*Render here */
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // render(shader_program, vao);
     // boardRenderer.clearRender();
-    boardRenderer.drawBoard(board.possibleMoves());
+    boardRenderer.drawBoard(state.possibleMoves());
     boardRenderer.clearRender();
 
     // ImGui Render here

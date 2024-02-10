@@ -178,7 +178,7 @@ std::vector<std::pair<int, int>> ChessBoard::possibleMoves() const {
 }
 
 std::vector<std::pair<int, int>> ChessBoard::possibleBishop() const {
-  int directions[][4] = {{-1, -1}, {1, 1}, {-1, 1}, {2, -1}};
+  int directions[][4] = {{-1, -1}, {1, 1}, {-1, 1}, {1, -1}};
   std::vector<std::pair<int, int>> result;
   for (auto direction : directions) {
     int x = m_selected->x + direction[0];
@@ -189,6 +189,8 @@ std::vector<std::pair<int, int>> ChessBoard::possibleBishop() const {
       result.push_back(std::make_pair(x, y));
       x += direction[0];
       y += direction[1];
+      if (tgt)
+        break;
     }
   }
   return result;
@@ -206,6 +208,8 @@ std::vector<std::pair<int, int>> ChessBoard::possibleRook() const {
       result.push_back(std::make_pair(x, y));
       x += direction[0];
       y += direction[1];
+      if (tgt)
+        break;
     }
   }
   return result;

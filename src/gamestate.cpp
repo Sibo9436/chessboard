@@ -1,4 +1,5 @@
 #include "gamestate.hpp"
+#include "common.hpp"
 #include <algorithm>
 
 GameState::GameState(std::unique_ptr<ChessBoard> board)
@@ -16,6 +17,12 @@ void GameState::handleInput(int x, int y) {
     if (std::find(m_possibleMoves.begin(), m_possibleMoves.end(), pos) !=
         m_possibleMoves.end()) {
       m_board->placeSelected(x, y);
+      m_hasSelection = false;
+      m_possibleMoves = {};
+      m_toMove = (WHITE == m_toMove) ? BLACK : WHITE;
+    } else {
+      m_hasSelection = false;
+      handleInput(x, y);
     }
   }
 }

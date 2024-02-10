@@ -19,6 +19,7 @@ public:
   std::vector<std::pair<int, int>> possibleMoves() const {
     return m_possibleMoves;
   };
+  std::vector<Piece *> *getPieces() const { return m_board->getPieces(); }
   void handleInput(int x, int y);
 
 private:
