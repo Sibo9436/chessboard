@@ -2,6 +2,7 @@
 #define INCLUDE_CHESS_CHESS_HPP_
 
 #include "common.hpp"
+#include <optional>
 #include <vector>
 struct Piece {
   unsigned int x, y;
@@ -12,8 +13,8 @@ class ChessBoard {
 public:
   ChessBoard();
   std::vector<Piece *> *getPieces() { return &m_pieces; }
-  bool select(int x, int y);
-  bool select(ChessPiece type, ChessColor color, int n);
+  std::optional<ChessColor> select(int x, int y);
+  bool findAndSelect(ChessPiece type, ChessColor color, int n);
   void placeSelected(int x, int y);
   void moveSelected(int x, int y);
   std::vector<std::pair<int, int>> possibleMoves() const;

@@ -6,6 +6,8 @@ set (CHESS_SOURCES
   shader.cpp
   shader.hpp
   common.hpp
+  gamestate.hpp
+  gamestate.cpp
   )
 add_library(chess STATIC ${CHESS_SOURCES})
 target_link_libraries(chess ${OPENGL_LIBRARIES} glfw glm glad stb)

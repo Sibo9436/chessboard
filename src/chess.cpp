@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include <algorithm>
 #include <iostream>
+#include <optional>
 #include <utility>
 
 ChessBoard::ChessBoard() {
@@ -33,7 +34,7 @@ Piece *ChessBoard::pick(int x, int y) const {
 }
 
 // Returns the nth matching element
-bool ChessBoard::select(ChessPiece type, ChessColor color, int n) {
+bool ChessBoard::findAndSelect(ChessPiece type, ChessColor color, int n) {
   int count = 0;
   for (auto *piece : m_pieces) {
     if (count < n) {
@@ -48,9 +49,9 @@ bool ChessBoard::select(ChessPiece type, ChessColor color, int n) {
   return count > 0;
 }
 
-bool ChessBoard::select(int x, int y) {
+std::optional<ChessColor> ChessBoard::select(int x, int y) {
   m_selected = pick(x, y);
-  return !!m_selected;
+  return (!m_selected) ? std::nullopt : std::optional(m_selected->color);
   ;
 }
 
