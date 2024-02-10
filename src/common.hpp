@@ -1,0 +1,5 @@
+#ifndef INCLUDE_SRC_COMMON_HPP_
+#define INCLUDE_SRC_COMMON_HPP_
+enum ChessPiece { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN };
+enum ChessColor { BLACK, WHITE };
+#endif // INCLUDE_SRC_COMMON_HPP_

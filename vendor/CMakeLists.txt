@@ -17,6 +17,10 @@ add_subdirectory(glm)
 			glad/include/KHR/khrplatform.h
 			glad/src/glad.c
 	    )
+  set (STB_SOURCES 
+      stb/stb_image.h 
+      stb/stb_impl.cpp
+      )
 
 #Creazione della lib di dearImGui
 add_library(imgui STATIC ${IMGUI_SOURCES})
@@ -32,3 +36,6 @@ target_link_libraries(imgui_backend  imgui glfw)
 #Creazione della lib GLAD
 add_library(glad STATIC ${GLAD_SOURCES})
 target_include_directories(glad PUBLIC glad/include)
+#Creazione della lib di STB
+add_library(stb STATIC ${STB_SOURCES})
+target_include_directories(stb PUBLIC stb)
